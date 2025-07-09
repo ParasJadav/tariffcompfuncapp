@@ -23,7 +23,7 @@ public class ReadTariffs
     }
 
     [Function("ReadTariffs")]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "read-plan")] HttpRequest req,
+    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req,
         ILogger log)
     {
         const string cacheKey = "PlanData";
@@ -31,7 +31,7 @@ public class ReadTariffs
         if (!Cache.TryGetValue(cacheKey, out List<Dictionary<string, object>>? cachedRows))
         {
             // Use the provided SAS URL
-            var sasUrl = "https://tariffcomp.blob.core.windows.net/plan/Plan.xlsx?sp=r&st=2025-07-09T10:05:22Z&se=2025-07-09T18:05:22Z&spr=https&sv=2024-11-04&sr=b&sig=Fr54g9fMUC4%2FiflXDgqsm3Xg22YyqcbDFIidyjIqdG4%3D";
+            var sasUrl = "https://tariffcomparisonstorage.blob.core.windows.net/plan/Plan.xlsx?sp=r&st=2025-07-09T10:51:53Z&se=2025-07-09T18:51:53Z&spr=https&sv=2024-11-04&sr=b&sig=FNUoJCzpLdV%2BqbYb52Ze9Dy91heqI6Kh0Ml%2FeE%2B%2BXrQ%3D";
 
             var blobClient = new BlobClient(new Uri(sasUrl));
 
