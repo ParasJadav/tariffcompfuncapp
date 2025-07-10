@@ -3,7 +3,7 @@ using TariffComparison.Models;
 
 namespace TariffComparison.Services;
 
-public class TariffService
+public class TariffService : ITariffService
 {
     public List<TariffModel> GetFilteredTariffs(
     List<Dictionary<string, object>> cachedRows,
