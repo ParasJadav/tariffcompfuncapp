@@ -89,13 +89,16 @@ public class TariffService
         {
             if (!string.IsNullOrEmpty(consumption))
             {
+                double consumptionValue = Convert.ToDouble(consumption);
+
                 if (tarifftype.Equals(Constants.TariffTypeAll))
                 {
-                    if (row.TryGetValue(Constants.TariffType, out var type))
+                    if (row.TryGetValue(Constants.TariffType, out var type) && type != null)
                     {
-                        if (!string.IsNullOrEmpty(type.ToString()))
+                        string typeString = type.ToString();
+                        if (!string.IsNullOrEmpty(typeString))
                         {
-                            if (type.ToString().Equals(Constants.TariffTypeBasic, StringComparison.OrdinalIgnoreCase))
+                            if (typeString.Equals(Constants.TariffTypeBasic, StringComparison.OrdinalIgnoreCase))
                             {
                                 if (row.TryGetValue(Constants.BaseCost, out var baseCost))
                                 {
@@ -103,14 +106,15 @@ public class TariffService
                                 }
                                 if (row.TryGetValue(Constants.AdditionalKwhCost, out var additionalKwhCost))
                                 {
-                                    consumptionCost = Convert.ToDouble(additionalKwhCost) * Convert.ToDouble(consumption);
+                                    consumptionCost = Convert.ToDouble(additionalKwhCost) * consumptionValue;
                                 }
                             }
-                            else if (type.ToString().Equals(Constants.TariffTypePackaged, StringComparison.OrdinalIgnoreCase))
+                            else if (typeString.Equals(Constants.TariffTypePackaged, StringComparison.OrdinalIgnoreCase))
                             {
                                 if (row.TryGetValue(Constants.IncludedKwh, out var includedKwh))
                                 {
-                                    if (Convert.ToDouble(includedKwh) >= Convert.ToDouble(consumption))
+                                    double includedKwhValue = Convert.ToDouble(includedKwh);
+                                    if (includedKwhValue >= consumptionValue)
                                     {
                                         if (row.TryGetValue(Constants.BaseCost, out var baseCost))
                                         {
@@ -123,7 +127,7 @@ public class TariffService
                                         {
                                             basicCost = Convert.ToDouble(baseCost);
                                         }
-                                        double difference = Convert.ToDouble(consumption) - Convert.ToDouble(includedKwh);
+                                        double difference = consumptionValue - includedKwhValue;
                                         if (row.TryGetValue(Constants.AdditionalKwhCost, out var additionalKwhCost))
                                         {
                                             consumptionCost = Convert.ToDouble(additionalKwhCost) * difference;
@@ -142,14 +146,15 @@ public class TariffService
                     }
                     if (row.TryGetValue(Constants.AdditionalKwhCost, out var additionalKwhCost))
                     {
-                        consumptionCost = Convert.ToDouble(consumption) * Convert.ToDouble(additionalKwhCost);
+                        consumptionCost = consumptionValue * Convert.ToDouble(additionalKwhCost);
                     }
                 }
                 else if (tarifftype.Equals(Constants.TariffTypePackaged))
                 {
                     if (row.TryGetValue(Constants.IncludedKwh, out var includedKwh))
                     {
-                        if (Convert.ToDouble(includedKwh) >= Convert.ToDouble(consumption))
+                        double includedKwhValue = Convert.ToDouble(includedKwh);
+                        if (includedKwhValue >= consumptionValue)
                         {
                             if (row.TryGetValue(Constants.BaseCost, out var baseCost))
                             {
@@ -162,7 +167,7 @@ public class TariffService
                             {
                                 basicCost = Convert.ToDouble(baseCost);
                             }
-                            double difference = Convert.ToDouble(consumption) - Convert.ToDouble(includedKwh);
+                            double difference = consumptionValue - includedKwhValue;
                             if (row.TryGetValue(Constants.AdditionalKwhCost, out var additionalKwhCost))
                             {
                                 consumptionCost = Convert.ToDouble(additionalKwhCost) * difference;
