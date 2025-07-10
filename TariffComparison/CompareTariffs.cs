@@ -12,14 +12,14 @@ namespace TariffComparison;
 public class CompareTariffs
 {
     private readonly ILogger<CompareTariffs> _logger;
-    private readonly TariffService _tariffService;
-    private readonly TariffDataService _tariffDataService;
+    private readonly ITariffService _tariffService;
+    private readonly ITariffDataService _tariffDataService;
 
-    public CompareTariffs(ILogger<CompareTariffs> logger)
+    public CompareTariffs(ILogger<CompareTariffs> logger, ITariffService tariffService, ITariffDataService tariffDataService)
     {
         _logger = logger;
-        _tariffService = new TariffService();
-        _tariffDataService = new TariffDataService();
+        _tariffService = tariffService;
+        _tariffDataService = tariffDataService);
         ExcelPackage.License.SetNonCommercialPersonal("Paras POC");
     }
 
