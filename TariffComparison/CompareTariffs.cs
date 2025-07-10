@@ -19,7 +19,7 @@ public class CompareTariffs
     {
         _logger = logger;
         _tariffService = tariffService;
-        _tariffDataService = tariffDataService);
+        _tariffDataService = tariffDataService;
         ExcelPackage.License.SetNonCommercialPersonal("Paras POC");
     }
 
