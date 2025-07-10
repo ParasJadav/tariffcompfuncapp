@@ -26,47 +26,57 @@ public class CompareTariffs
     [Function("CompareTariffs")]
     public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req, ILogger log)
     {
-        // Parse the request body
-        string requestBody;
-        var filteredResults = new List<TariffModel>();
-
-        using (var streamReader = new StreamReader(req.Body))
+        try
         {
-            requestBody = await streamReader.ReadToEndAsync();
+            _logger.LogInformation("C# HTTP trigger function CompareTariffs exectution started.");
+            // Parse the request body
+            string requestBody;
+            var filteredResults = new List<TariffModel>();
+
+            using (var streamReader = new StreamReader(req.Body))
+            {
+                requestBody = await streamReader.ReadToEndAsync();
+            }
+
+            var requestData = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+
+            if (requestData == null || !requestData.TryGetValue(Constants.RequestConsumption, out var consumptionObj) || !requestData.TryGetValue(Constants.RequestType, out var tarifftypeObj))
+            {
+                return new BadRequestObjectResult("Invalid request. Please provide 'consumption' and 'tarifftype'.");
+            }
+
+            var consumption = consumptionObj?.ToString();
+            if (string.IsNullOrEmpty(consumption))
+            {
+                return new BadRequestObjectResult("Invalid 'consumption' value. It must be a number.");
+            }
+
+            var tarifftype = tarifftypeObj?.ToString();
+            if (string.IsNullOrEmpty(tarifftype))
+            {
+                return new BadRequestObjectResult("Invalid 'tarifftype' value. It must be a non-empty string.");
+            }
+
+            var cachedRows = _tariffDataService.GetTariffData(Constants.SASUrl, _logger);
+
+            if (cachedRows == null || cachedRows.Count == 0)
+            {
+                return new NotFoundObjectResult("No tariff data found.");
+            }
+
+            if (cachedRows != null && cachedRows.Count > 0)
+            {
+                filteredResults = _tariffService.GetFilteredTariffs(cachedRows, tarifftype, consumption, requestData, log);
+            }
+
+            _logger.LogInformation("C# HTTP trigger function CompareTariffs processed a request.");
+            return new OkObjectResult(new { rows = filteredResults });
         }
-
-        var requestData = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
-
-        if (requestData == null || !requestData.TryGetValue(Constants.RequestConsumption, out var consumptionObj) || !requestData.TryGetValue(Constants.RequestType, out var tarifftypeObj))
+        catch (Exception ex)
         {
-            return new BadRequestObjectResult("Invalid request. Please provide 'consumption' and 'tarifftype'.");
-        }
-
-        var consumption = consumptionObj?.ToString();
-        if (string.IsNullOrEmpty(consumption))
-        {
-            return new BadRequestObjectResult("Invalid 'consumption' value. It must be a number.");
-        }
-
-        var tarifftype = tarifftypeObj?.ToString();
-        if (string.IsNullOrEmpty(tarifftype))
-        {
-            return new BadRequestObjectResult("Invalid 'tarifftype' value. It must be a non-empty string.");
-        }
-
-        var cachedRows = _tariffDataService.GetTariffData(Constants.SASUrl, _logger);
-
-        if (cachedRows == null || cachedRows.Count == 0)
-        {
+            _logger.LogInformation("Exception executing CompareTariffs function trigger." + ex.InnerException);
             return new NotFoundObjectResult("No tariff data found.");
         }
-
-        if (cachedRows != null && cachedRows.Count > 0)
-        {
-            filteredResults = _tariffService.GetFilteredTariffs(cachedRows, tarifftype, consumption, requestData, log);
-        }
-
-        _logger.LogInformation("C# HTTP trigger function CompareTariffs processed a request.");
-        return new OkObjectResult(new { rows = filteredResults });
+        
     }
 }

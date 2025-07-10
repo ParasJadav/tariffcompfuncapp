@@ -25,14 +25,23 @@ public class ReadTariffs
     public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req,
         ILogger log)
     {
-        var cachedRows = _tariffDataService.GetTariffData(Constants.SASUrl, _logger);
-
-        if (cachedRows == null || cachedRows.Count == 0)
+        try
         {
-            return new NotFoundObjectResult("No tariff data found.");
-        }
+            _logger.LogInformation("C# HTTP trigger function ReadTariffs exectution started.");
+            var cachedRows = _tariffDataService.GetTariffData(Constants.SASUrl, _logger);
 
-        _logger.LogInformation("C# HTTP trigger function ReadTariffs processed a request.");
-        return new OkObjectResult(new { rows = cachedRows });
+            if (cachedRows == null || cachedRows.Count == 0)
+            {
+                return new NotFoundObjectResult("No tariff data found.");
+            }
+
+            _logger.LogInformation("C# HTTP trigger function ReadTariffs processed a request.");
+            return new OkObjectResult(new { rows = cachedRows });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation("Exception executing ReadTariffs function trigger." + ex.InnerException);
+            return new NotFoundObjectResult("No tariff data found");
+        }
     }
 }
