@@ -18,28 +18,6 @@ Repository URL: [tariffcompfuncapp (.NET)](https://github.com/ParasJadav/tariffc
 
 ---
 
-## Project Structure
-
-```
-TariffCompFuncApp/
-│
-├── Functions/
-│   └── TariffFunction.cs         # Main HTTP trigger for tariff comparison
-│
-├── Models/
-│   ├── TariffMoel.cs          # Input model
-│
-├── Services/
-│   └── TariffService.cs          # Logic to fetch and calculate tariffs
-│
-├── local.settings.json          # Local development settings
-├── host.json                    # Azure Function host configuration
-├── Program.cs                   # Entry point and DI config
-└── TariffComparison.csproj     # Project file
-```
-
----
-
 ## Features
 
 - **Tariff Calculation**: Computes cost based on annual consumption and base tariff data.
