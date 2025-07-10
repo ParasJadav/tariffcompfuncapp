@@ -22,8 +22,7 @@ public class ReadTariffs
     }
 
     [Function("ReadTariffs")]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req,
-        ILogger log)
+    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req)
     {
         try
         {
