@@ -39,34 +39,34 @@ public class TariffService
                     : string.Empty,
                 AnnualCost = CalculateAnnualCost(row, tarifftype, consumption)
             }).ToList();
+        }
 
-            if (requestData.TryGetValue(Constants.RequestSortBy, out var sortBy))
+        if (requestData.TryGetValue(Constants.RequestSortBy, out var sortBy))
+        {
+            var sortByValue = sortBy?.ToString();
+            switch (sortByValue?.ToLower())
             {
-                var sortByValue = sortBy?.ToString();
-                switch (sortByValue?.ToLower())
-                {
-                    case "priceasc":
-                        filteredResults = filteredResults.OrderBy(t => t.AnnualCost).ToList();
-                        break;
-                    case "pricedesc":
-                        filteredResults = filteredResults.OrderByDescending(t => t.AnnualCost).ToList();
-                        break;
-                    case "nameasc":
-                        filteredResults = filteredResults.OrderBy(t => t.TariffName).ToList();
-                        break;
-                    case "namedesc":
-                        filteredResults = filteredResults.OrderByDescending(t => t.TariffName).ToList();
-                        break;
-                    case "typeasc":
-                        filteredResults = filteredResults.OrderBy(t => t.TariffType).ToList();
-                        break;
-                    case "typedesc":
-                        filteredResults = filteredResults.OrderByDescending(t => t.TariffType).ToList();
-                        break;
-                    default:
-                        logger.LogWarning("Invalid sortBy value provided. No sorting applied.");
-                        break;
-                }
+                case "priceasc":
+                    filteredResults = filteredResults.OrderBy(t => t.AnnualCost).ToList();
+                    break;
+                case "pricedesc":
+                    filteredResults = filteredResults.OrderByDescending(t => t.AnnualCost).ToList();
+                    break;
+                case "nameasc":
+                    filteredResults = filteredResults.OrderBy(t => t.TariffName).ToList();
+                    break;
+                case "namedesc":
+                    filteredResults = filteredResults.OrderByDescending(t => t.TariffName).ToList();
+                    break;
+                case "typeasc":
+                    filteredResults = filteredResults.OrderBy(t => t.TariffType).ToList();
+                    break;
+                case "typedesc":
+                    filteredResults = filteredResults.OrderByDescending(t => t.TariffType).ToList();
+                    break;
+                default:
+                    logger.LogWarning("Invalid sortBy value provided. No sorting applied.");
+                    break;
             }
         }
 
