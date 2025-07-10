@@ -4,7 +4,7 @@ using TariffComparison.Helpers;
 
 namespace TariffComparison.Services;
 
-public class TariffDataService : ITariffDataService
+public class TariffDataService: ITariffDataService
 {
     private static readonly MemoryCache Cache = new(new MemoryCacheOptions());
 
