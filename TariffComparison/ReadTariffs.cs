@@ -10,12 +10,12 @@ namespace TariffComparison;
 public class ReadTariffs
 {
     private readonly ILogger<CompareTariffs> _logger;
-    private readonly ITariffDataService _tariffDataService;
+    private readonly TariffDataService _tariffDataService;
 
-    public ReadTariffs(ILogger<CompareTariffs> logger, ITariffDataService tariffDataService)
+    public ReadTariffs(ILogger<CompareTariffs> logger)
     {
         _logger = logger;
-        _tariffDataService = tariffDataService;
+        _tariffDataService = new TariffDataService();
 
         // Correctly set the license context for EPPlus
         ExcelPackage.License.SetNonCommercialPersonal("Paras POC");
