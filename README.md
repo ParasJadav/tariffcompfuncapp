@@ -4,8 +4,6 @@
 
 The **TariffCompFuncApp (.NET)** is an Azure Function App built using .NET to serve as the backend for the Tariff Comparison platform. It provides HTTP-triggered endpoints to fetch and calculate electricity tariff data based on user input (postal code and annual consumption).
 
-Repository URL: [tariffcompfuncapp (.NET)](https://github.com/ParasJadav/tariffcompfuncapp/new/master)
-
 ---
 
 ## Technologies Used
