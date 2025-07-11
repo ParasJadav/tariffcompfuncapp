@@ -35,6 +35,13 @@ jobs:
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           dotnet build --configuration Release --output ./output
           popd
+        
+      - name: 'Run Unit Tests'
+        shell: pwsh
+        run: |
+          pushd './TariffComparison.Test'
+          dotnet test --configuration Release
+          popd
       
       - name: Login to Azure
         uses: azure/login@v2
