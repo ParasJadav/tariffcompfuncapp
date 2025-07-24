@@ -23,8 +23,8 @@ public class TariffDataService: ITariffDataService
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-                    SlidingExpiration = TimeSpan.FromMinutes(5)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(4),
+                    SlidingExpiration = TimeSpan.FromMinutes(15)
                 };
                 Cache.Set(Constants.CacheKey, rows, cacheEntryOptions);
 
