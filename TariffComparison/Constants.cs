@@ -22,6 +22,6 @@ namespace TariffComparison
         public const string RequestType = "tarifftype";
         public const string RequestConsumption = "consumption";
         public const string RequestSortBy = "sortby";
-        public const string SASUrl = "https://tariffcomparisonstorage.blob.core.windows.net/plan/Plan.xlsx?sp=r&st=2025-07-10T06:14:45Z&se=2025-07-31T14:14:45Z&spr=https&sv=2024-11-04&sr=b&sig=S8UBkJjY9JupnONORArhuLExP6kuU7KTRmy9ejpkr%2F4%3D";
+        public const string SASUrl = "https://tariffcomparisonstorage.blob.core.windows.net/plan/Plan.xlsx?sp=r&st=2025-08-10T08:02:33Z&se=2025-08-30T16:17:33Z&spr=https&sv=2024-11-04&sr=b&sig=GeJHKt0MmbK8BcBgGblikhVcJ6HUvqhInCqP8Y5L%2B0s%3D";
     }
 }
